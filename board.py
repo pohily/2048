@@ -34,6 +34,12 @@ class Board():
             self.board[ver][hor] = '2'
 
 
+    def turn(self):
+        self.board = list(zip(*self.board))
+        for row in range(4):
+            self.board[row] = list(self.board[row][::-1])
+
+
     def up(self):
         for row in range(1, 4):
             for column in range(4):
@@ -51,19 +57,31 @@ class Board():
 
 
     def down(self):
-        pass
+        self.turn()
+        self.turn()
+        self.up()
+        self.turn()
+        self.turn()
 
 
     def left(self):
-        pass
+        self.turn()
+        self.up()
+        self.turn()
+        self.turn()
+        self.turn()
 
 
     def right(self):
-        pass
+        self.turn()
+        self.turn()
+        self.turn()
+        self.up()
+        self.turn()
             
 
 a = Board()
 print(a)
-print(a.blanks_left)
-a.up()
+a.right()
 print(a)
+
