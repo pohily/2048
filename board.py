@@ -22,11 +22,20 @@ class Board():
         return '\n'.join(lines)
 
 
+    def find_blanks(self):
+        self.blanks_left = []
+        for row in range(4):
+            for column in range(4):
+                if self.board[row][column] == '0':
+                    self.blanks_left.append(row * 4 + column + 1)
+
+
     def add_two(self):
         if not self.blanks_left:
             print('You lose!')
         else:
-            taken = choice(self.blanks_left)
+            self.find_blanks()
+            taken = choice(self.blanks_left) 
             self.blanks_left.remove(taken)
             
             ver = taken // 4
@@ -51,7 +60,7 @@ class Board():
                         continue
                     elif self.board[check_row][column] == self.board[check_row + 1][column]:
                         self.board[check_row][column] = str(2 * int(self.board[check_row][column]))
-                        self.score += int(self.board[check_row + 1][column])
+                        self.score += 2 * int(self.board[check_row + 1][column])
                         self.board[check_row + 1][column] = '0'
                         break
 
@@ -80,8 +89,19 @@ class Board():
         self.turn()
             
 
-a = Board()
-print(a)
-a.right()
-print(a)
+board = Board()
+print(board)
+while board.blanks_left:
+    hand = input('--> ')
+    if hand == 'q':
+        board.up()
+    elif hand == 'a':
+        board.down()
+    elif hand == 'z':
+        board.left()
+    elif hand == 'x':
+        board.right()
+    board.add_two()
+    print(board)
+
 
