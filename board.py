@@ -18,7 +18,7 @@ class Board():
             line = []
             for y in range(4):
                 line.append(self.board[x][y])
-            lines.append(' '.join(line))
+            lines.append('\t'.join(line))
         return '\n'.join(lines)
 
 
@@ -38,8 +38,8 @@ class Board():
             taken = choice(self.blanks_left) 
             self.blanks_left.remove(taken)
             
-            ver = taken // 4
-            hor = taken - 4 * ver
+            ver = (taken - 1) // 4
+            hor = taken - 4 * ver - 1
             self.board[ver][hor] = '2'
 
 
@@ -50,19 +50,21 @@ class Board():
 
 
     def up(self):
-        for row in range(1, 4):
-            for column in range(4):
-                for check_row in range(row - 1, -1, -1):
-                    if self.board[check_row + 1][column] == '0':
+        merged = []
+        for start in range(3):
+            for row in range(start, -1, -1):
+                for column in range(4):
+                    if self.board[row][column] == '0':
+                        self.board[row][column], self.board[row + 1][column] = self.board[row + 1][column], self.board[row][column]
                         continue
-                    if self.board[check_row][column] == '0':
-                        self.board[check_row][column], self.board[check_row + 1][column] = self.board[check_row + 1][column], self.board[check_row][column]
-                        continue
-                    elif self.board[check_row][column] == self.board[check_row + 1][column]:
-                        self.board[check_row][column] = str(2 * int(self.board[check_row][column]))
-                        self.score += 2 * int(self.board[check_row + 1][column])
-                        self.board[check_row + 1][column] = '0'
+                    elif self.board[row][column] == self.board[row + 1][column] and (row, column) not in merged and (row + 1, column) not in merged:
+                        match = 2 * int(self.board[row + 1][column])
+                        self.board[row][column] = str(match)
+                        self.score += match
+                        self.board[row + 1][column] = '0'
+                        merged.append((row, column))
                         break
+                                
 
 
     def down(self):
@@ -103,5 +105,6 @@ while board.blanks_left:
         board.right()
     board.add_two()
     print(board)
+    
 
 
