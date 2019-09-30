@@ -3,7 +3,7 @@ from random import choice
 class Board():
     def __init__(self):
         self.board = [['0', '0', '0', '0'], ['0', '0', '0', '0'], ['0', '0', '0', '0'], ['0', '0', '0', '0'] ]
-        self.blanks_left = list(range(16))
+        self.blanks_left = list(1, range(17))
         self.score = 0
         self.add_two()
         self.add_two()
